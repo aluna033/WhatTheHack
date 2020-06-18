@@ -50,8 +50,8 @@ This hack will help you learn:
   - Student's Challenge Guide
 
 ## Contributors
+- Pete Rodriguez
+- Ariel Luna
 - Peter Laudati
-- Gino Filicetti
-- Jane Q. Public
-- Joe T. Muppet
+
 
