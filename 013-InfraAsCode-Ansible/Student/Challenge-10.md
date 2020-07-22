@@ -1,4 +1,4 @@
-# Challenge 12 - Nested Playbooks
+# Challenge 10 - Nested Playbooks
 
 [< Previous Challenge](./Challenge-09.md) - [Home](../readme.md)
 
