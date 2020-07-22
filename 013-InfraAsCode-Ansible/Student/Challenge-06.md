@@ -1,78 +1,53 @@
-# What The Hack - Challenge Template
+# Challenge 6 - Configure a Linux Server with NGINX
 
-This is a markdown template for how a WTH Challenge should be organized and formatted. If a section is marked as "(Optional)", you do not need to include it.
+[< Previous Challenge](./Challenge-05.md) - [Home](../readme.md) - [Next Challenge>](./Challenge-07.md)
 
-# Challenge \# - \<Challenge Name>
+## Introduction
 
-[< Previous Challenge](./ChallengeX-1.md)&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;[Next Challenge>](./ChallengeX+1.md)
-
-## Pre-requisites (Optional)
-
-*Include any technical pre-requisites needed for this challenge.  Typically, it is completion of one or more of the previous challenges if there is a dependency.*
-
-**- Lorem ipsum dolor sit amet, consectetur adipiscing elit.**
-
-**- Fusce commodo nulla elit, vitae scelerisque lorem maximus eu.** 
-
-**- Nulla vitae ante turpis. Etiam tincidunt venenatis mauris, ac volutpat augue rutrum sed. Vivamus dignissim est sed dolor luctus aliquet. Vestibulum cursus turpis nec finibus commodo.**
-
-**- Vivamus venenatis accumsan neque non lacinia. Sed maximus sodales varius. Proin eu nulla nunc. Proin scelerisque ipsum in massa tincidunt venenatis. Nulla eget interdum nunc, in vehicula risus.**
-
-
-## Introduction (Optional)
-
-*Provide an overview of the technologies or tasks that will be needed to complete the next challenge.  This includes the technical context for the challenge, as well as any new "lessons" the attendees should learn before completing the challenge.*
-
-*Optionally, the coach or event host may present a mini-lesson (with a PPT or video) to set up the context & introduction to the next topic.*
-
-**Lorem ipsum dolor sit amet, consectetur adipiscing elit. Fusce commodo nulla elit, vitae scelerisque lorem maximus eu. Nulla vitae ante turpis. Etiam tincidunt venenatis mauris, ac volutpat augue rutrum sed. Vivamus dignissim est sed dolor luctus aliquet. Vestibulum cursus turpis nec finibus commodo. Vivamus venenatis accumsan neque non lacinia.**
-
+The goals for this challenge include understanding:
+- Custom script extensions
+- Globally unique naming context and complex dependencies
+- Staging artifacts in a location accessible to the Azure Resource Manager
 
 ## Description
 
-*The challenge description and details go here.  This should NOT be step-by-step but rather a simple stating of the technical goals of the challenge.  If this is more than 2-3 paragraphs, it's likely you are not doing it right.*
+We have provided a script (`install_apache.sh`) that configures a web server on a Linux VM. When run on the VM, the script deploys a static web page that should be available at `http://<PublicIPofTheVM>/wth.html`
 
-*Optionally, you may provide learning resources and/or tips and code snippets in the sections below. These are meant  as learning aids for the attendees to help them complete the challenge and maintain momentum as they may fall behind the rest of their squad cohorts.*
+You can find the script in the Resources folder for **Challenge-06**.
 
-**Lorem ipsum dolor sit amet, consectetur adipiscing elit. Fusce commodo nulla elit, vitae scelerisque lorem maximus eu. Nulla vitae ante turpis. Etiam tincidunt venenatis mauris, ac volutpat augue rutrum sed. Vivamus dignissim est sed dolor luctus aliquet. Vestibulum cursus turpis nec finibus commodo. Vivamus venenatis accumsan neque non lacinia. Sed maximus sodales varius. Proin eu nulla nunc. Proin scelerisque ipsum in massa tincidunt venenatis. Nulla eget interdum nunc, in vehicula risus. Etiam rutrum purus non eleifend lacinia. Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed quis vestibulum risus. Maecenas eu eros sit amet ligula consectetur pellentesque vel quis nisi.**
+Your challenge is to:
 
+- Extend the Ansible playbook to configure a webserver on the Linux VM you deployed
+    - Host the script file in a secure artifact (staging) location that is only accessible to the Azure Resource Manager.
+    - Pull the website configuration script from the artifact location.
+
+```
+ORIGINAL CHALLENGE TEXT
+
+Install the NGINX web server on an existing Linux Virtual Machine. To do this you will need to create an inventory.cfg and a YAML file. The inventory.cfg has information about the VM you want to manage and the location of the Python interpreter. To find the location of Python, you will need to SSH to the VM and look in /usr/bin. Use the latest version
+
+It should look something like this:
+
+[web]
+{Your public IP address of the Linux VM} ansible_user=azureuser
+
+[web:vars]
+ansible_python_interpreter={location of python install}
+
+Once you have the inventory.cfg, you will create the Ansible Playbook YAML file that will install NGINX. First, you will update all apt (Ubuntu) or yum (Redhat/CentOS) packages to the latest version. For RedHat/CentOS you will need install the EPEL repository (epel-release) before we install NGINX. Next, you will install NGINX using apt or yum in the file and set the service to running.
+
+To use the inventory.cfg file you will need to run the following Ansible playbook command which will use the inventory.cfg and YAML file you created earlier. The -b switch tells Ansible to run as root using sudo.
+
+ansible-playbook -i inventory.cfg {yaml file} -b
+
+```
 
 ## Success Criteria
 
-*Success criteria goes here. This is a list of things an coach can verfiy to prove the attendee has successfully completed the challenge.*
+1. Verify that NGINX is running by running curl from the SSH terminal with `curl http://127.0.0.1`
 
-**- Lorem ipsum dolor sit amet, consectetur adipiscing elit. Fusce commodo nulla elit, vitae scelerisque lorem maximus eu. Nulla vitae ante turpis. Etiam tincidunt venenatis mauris, ac volutpat augue rutrum sed. Vivamus dignissim est sed dolor luctus aliquet. Vestibulum cursus turpis nec finibus commodo.**
+## Tips
 
-**- Vivamus venenatis accumsan neque non lacinia. Sed maximus sodales varius. Proin eu nulla nunc. Proin scelerisque ipsum in massa tincidunt venenatis. Nulla eget interdum nunc, in vehicula risus. Etiam rutrum purus non eleifend lacinia.**
-
-**- Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed quis vestibulum risus. Maecenas eu eros sit amet ligula consectetur pellentesque vel quis nisi.**
-
-
-## Learning Resources
-
-*List of relevant links and online articles that should give the attendees the knowledge needed to complete the challenge.*
-
-**- Lorem ipsum dolor sit amet, consectetur adipiscing elit.**
-
-**- Fusce commodo nulla elit, vitae scelerisque lorem maximus eu.** 
-
-**- Nulla vitae ante turpis. Etiam tincidunt venenatis mauris, ac volutpat augue rutrum sed. Vivamus dignissim est sed dolor luctus aliquet. Vestibulum cursus turpis nec finibus commodo.**
-
-
-## Tips (Optional)
-
-*Add tips and hints here to give students food for thought.*
-
-**- Lorem ipsum dolor sit amet, consectetur adipiscing elit.**
-
-**- Fusce commodo nulla elit, vitae scelerisque lorem maximus eu.** 
-
-
-## Advanced Challenges (Optional)
-
-*Too comfortable?  Eager to do more?  Try these additional challenges!*
-
-**- Lorem ipsum dolor sit amet, consectetur adipiscing elit. Fusce commodo nulla elit, vitae scelerisque lorem maximus eu. Nulla vitae ante turpis. Etiam tincidunt venenatis mauris, ac volutpat augue rutrum sed. Vivamus dignissim est sed dolor luctus aliquet. Vestibulum cursus turpis nec finibus commodo. Vivamus venenatis accumsan neque non lacinia.**
-
-**- Sed maximus sodales varius. Proin eu nulla nunc. Proin scelerisque ipsum in massa tincidunt venenatis. Nulla eget interdum nunc, in vehicula risus. Etiam rutrum purus non eleifend lacinia. Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed quis vestibulum risus. Maecenas eu eros sit amet ligula consectetur pellentesque vel quis nisi.**
-
+- Use an Azure Blob Storage account as the artifact location
+- Secure access to the artifact location with a SAS token
+- Pass these values to the Ansible playbook as parameters
