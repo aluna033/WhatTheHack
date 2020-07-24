@@ -1,0 +1,16 @@
+---
+- hosts: localhost
+  collections:
+    - azure.azcollections
+      
+#Create a resource group in a local region
+  tasks:
+    - name: Create a resource named ansible-wth-rg 
+      azure_rm_resourcegroup:
+        name: ansible-wth-rg
+        location: eastus2
+      register: rg
+    
+    - debug:
+        var: rg
+        
