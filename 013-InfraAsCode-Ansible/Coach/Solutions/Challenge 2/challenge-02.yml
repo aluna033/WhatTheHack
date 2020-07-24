@@ -1,0 +1,27 @@
+---
+- hosts: localhost
+  connection: local
+  collections:
+    - azure.azcollections
+  
+  tasks:
+ # Create Virtunal Network
+    - name: "Create Virtual Network"
+      azure_rm_virtualnetwork:
+        name: wthVnet
+        resource_group: ansible-wth-rg
+        address_prefixes_cidr:
+          - "10.2.0.0/16"
+    
+    # Create Subnet
+    - name: "Create Subnet"
+      azure_rm_subnet:
+        name: default
+        virtual_network_name: wthVnet
+        resource_group: ansible-wth-rg
+        address_prefix_cidr: "10.2.1.0/24"
+        
+    
+        
+
+      
