@@ -1,78 +1,45 @@
-# What The Hack - Challenge Template
+# Challenge 5 - Deploy a Virtual Machine
 
-This is a markdown template for how a WTH Challenge should be organized and formatted. If a section is marked as "(Optional)", you do not need to include it.
+[< Previous Challenge](./Challenge-04.md) - [Home](../readme.md) - [Next Challenge>](./Challenge-06.md)
 
-# Challenge \# - \<Challenge Name>
+## Introduction 
 
-[< Previous Challenge](./ChallengeX-1.md)&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;[Next Challenge>](./ChallengeX+1.md)
+In this challenge, you will put all the pieces together and extend your Ansible playbook to deploy a Virtual Machine in Azure.
 
-## Pre-requisites (Optional)
-
-*Include any technical pre-requisites needed for this challenge.  Typically, it is completion of one or more of the previous challenges if there is a dependency.*
-
-**- Lorem ipsum dolor sit amet, consectetur adipiscing elit.**
-
-**- Fusce commodo nulla elit, vitae scelerisque lorem maximus eu.** 
-
-**- Nulla vitae ante turpis. Etiam tincidunt venenatis mauris, ac volutpat augue rutrum sed. Vivamus dignissim est sed dolor luctus aliquet. Vestibulum cursus turpis nec finibus commodo.**
-
-**- Vivamus venenatis accumsan neque non lacinia. Sed maximus sodales varius. Proin eu nulla nunc. Proin scelerisque ipsum in massa tincidunt venenatis. Nulla eget interdum nunc, in vehicula risus.**
-
-
-## Introduction (Optional)
-
-*Provide an overview of the technologies or tasks that will be needed to complete the next challenge.  This includes the technical context for the challenge, as well as any new "lessons" the attendees should learn before completing the challenge.*
-
-*Optionally, the coach or event host may present a mini-lesson (with a PPT or video) to set up the context & introduction to the next topic.*
-
-**Lorem ipsum dolor sit amet, consectetur adipiscing elit. Fusce commodo nulla elit, vitae scelerisque lorem maximus eu. Nulla vitae ante turpis. Etiam tincidunt venenatis mauris, ac volutpat augue rutrum sed. Vivamus dignissim est sed dolor luctus aliquet. Vestibulum cursus turpis nec finibus commodo. Vivamus venenatis accumsan neque non lacinia.**
-
+The goals for this challenge include understanding:
+   + Globally unique naming context and complex dependencies
+   + Clean code with neat parameter and variable values
+   + Figuring out what Azure resources it takes to build a VM
 
 ## Description
 
-*The challenge description and details go here.  This should NOT be step-by-step but rather a simple stating of the technical goals of the challenge.  If this is more than 2-3 paragraphs, it's likely you are not doing it right.*
++	Extend your Ansible playbook to deploy a virtual machine
+    +   VM requirements -
+        +   Linux OS 
+        +   Use a secure secret value for the admin password from Azure Key Vault
+    + Use a resource prefix and playbook variables to have consistent naming of resources
 
-*Optionally, you may provide learning resources and/or tips and code snippets in the sections below. These are meant  as learning aids for the attendees to help them complete the challenge and maintain momentum as they may fall behind the rest of their squad cohorts.*
+```
+ORIGINAL CHALLENGE TEXT:
 
-**Lorem ipsum dolor sit amet, consectetur adipiscing elit. Fusce commodo nulla elit, vitae scelerisque lorem maximus eu. Nulla vitae ante turpis. Etiam tincidunt venenatis mauris, ac volutpat augue rutrum sed. Vivamus dignissim est sed dolor luctus aliquet. Vestibulum cursus turpis nec finibus commodo. Vivamus venenatis accumsan neque non lacinia. Sed maximus sodales varius. Proin eu nulla nunc. Proin scelerisque ipsum in massa tincidunt venenatis. Nulla eget interdum nunc, in vehicula risus. Etiam rutrum purus non eleifend lacinia. Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed quis vestibulum risus. Maecenas eu eros sit amet ligula consectetur pellentesque vel quis nisi.**
+Create a Linux VM using Ansible. You will first need to create a Network Interface Card. Use the following settings for the NIC:
 
+Resource group: ansible-rg Name: ansible-VM-nic Public IP address: ansible-pip VNet: WTHVNETAN Subnet: default Security Group: ansible-nsg-ssh
 
+The VM will use all of the Azure resources you have previously created. Use the following settings:
+
+VM Name: anlinuxvm01 Resource Group: ansible-rg VM Size: Standard_DS1_v2 Admin username: azureuser SSH password enabled: false SSH public keys: [use the public key you created in the prequisites section] Network interfaces: ansible-VM-nic Managed Disk Type: Premium_LRS Image: CentOS 7.5 (or Ubuntu 18.04 if you prefer)
+
+Ensure that you can SSH to the VM using its public IP address with ssh azureuser@[public ip address]
+
+Hint: You can use the Azure CLI command az vm list-ip-addresses to find the IP address for the newly created VM.
+```
 ## Success Criteria
 
-*Success criteria goes here. This is a list of things an coach can verfiy to prove the attendee has successfully completed the challenge.*
+1. Verify that your virtual machine has been deployed via the Azure Portal or Azure CLI.
+1. Connect to your virtual machine and verify you can login via SSH
 
-**- Lorem ipsum dolor sit amet, consectetur adipiscing elit. Fusce commodo nulla elit, vitae scelerisque lorem maximus eu. Nulla vitae ante turpis. Etiam tincidunt venenatis mauris, ac volutpat augue rutrum sed. Vivamus dignissim est sed dolor luctus aliquet. Vestibulum cursus turpis nec finibus commodo.**
+## Tips
 
-**- Vivamus venenatis accumsan neque non lacinia. Sed maximus sodales varius. Proin eu nulla nunc. Proin scelerisque ipsum in massa tincidunt venenatis. Nulla eget interdum nunc, in vehicula risus. Etiam rutrum purus non eleifend lacinia.**
-
-**- Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed quis vestibulum risus. Maecenas eu eros sit amet ligula consectetur pellentesque vel quis nisi.**
-
-
-## Learning Resources
-
-*List of relevant links and online articles that should give the attendees the knowledge needed to complete the challenge.*
-
-**- Lorem ipsum dolor sit amet, consectetur adipiscing elit.**
-
-**- Fusce commodo nulla elit, vitae scelerisque lorem maximus eu.** 
-
-**- Nulla vitae ante turpis. Etiam tincidunt venenatis mauris, ac volutpat augue rutrum sed. Vivamus dignissim est sed dolor luctus aliquet. Vestibulum cursus turpis nec finibus commodo.**
-
-
-## Tips (Optional)
-
-*Add tips and hints here to give students food for thought.*
-
-**- Lorem ipsum dolor sit amet, consectetur adipiscing elit.**
-
-**- Fusce commodo nulla elit, vitae scelerisque lorem maximus eu.** 
-
-
-## Advanced Challenges (Optional)
-
-*Too comfortable?  Eager to do more?  Try these additional challenges!*
-
-**- Lorem ipsum dolor sit amet, consectetur adipiscing elit. Fusce commodo nulla elit, vitae scelerisque lorem maximus eu. Nulla vitae ante turpis. Etiam tincidunt venenatis mauris, ac volutpat augue rutrum sed. Vivamus dignissim est sed dolor luctus aliquet. Vestibulum cursus turpis nec finibus commodo. Vivamus venenatis accumsan neque non lacinia.**
-
-**- Sed maximus sodales varius. Proin eu nulla nunc. Proin scelerisque ipsum in massa tincidunt venenatis. Nulla eget interdum nunc, in vehicula risus. Etiam rutrum purus non eleifend lacinia. Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed quis vestibulum risus. Maecenas eu eros sit amet ligula consectetur pellentesque vel quis nisi.**
-
+- **TIP:** For a Linux VM, you can use an admin password or an SSH key to control access to the VM. It is common (and a recommended practice) to use an SSH key with Linux instead of an admin password. If you are not familiar with Linux, we recommend using an admin password for this hack to keep things simple and focus on learning Ansible playbooks.
+- **TIP:** You will need to supply your VM with a Public IP address or use the Azure Bastion service to connect to it.
