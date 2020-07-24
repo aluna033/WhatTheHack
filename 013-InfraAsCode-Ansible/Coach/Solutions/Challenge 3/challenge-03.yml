@@ -1,0 +1,33 @@
+---
+- hosts: localhost
+  connection: local
+  collections:
+    - azure.azcollections
+  
+  vars:
+    wth_rg_name: ansible-wth-rg
+    wth_ssh_nsg: ansible_wth_nsg
+    wth_vm_nsg_list: 
+      - name: ansible-nsg-ssh
+        access: Allow
+        protocol: Tcp
+        direction: Inbound
+        priority: 1001
+        port: 22 
+        source_address_prefix: Internet
+
+  tasks:
+  #Create NSG for ssh
+   - name: Create Network Security Group that allows ssh
+     azure_rm_securitygroup:
+       resource_group: "{{ wth_rg_name }}"
+       name: "{{ wth_ssh_nsg }}"
+       rules:
+          - name: 'Allow_SSH'
+            protocol: 'Tcp'
+            source_address_prefix: "*"
+            destination_port_range: 22
+            access: Allow
+            priority: 1000
+            direction: Inbound
+    
