@@ -14,13 +14,16 @@ Using Azure Cloud Shell is the quickest method but you may wish to have more con
 
 You will need to create Azure credentials using your Azure subscription ID and service principal values. Once you have done that you will create an Ansible credentials file with your subscription Id, tenant Id, secret and client Id. 
 
-You may also want to use Visual Studio Code which is available on Windows, Mac and Linux for editing the YAML files needed for Ansible. You can add the Ansible and the YAML extensions for this. 
 
 ## Create SSH Key
 
 Generate an SSH key pair for being able to access your Linux VM's. You can find a detailed instructions on how to create an SSH key pair at the URL below. 
 
 https://docs.microsoft.com/en-us/azure/virtual-machines/linux/create-ssh-keys-detailed
+
+## Install an Editor for editing YAML files
+
+You may also want to use Visual Studio Code which is available on Windows, Mac and Linux for editing the YAML files needed for Ansible. You can add the Ansible and the YAML extensions for this. 
 
 ## Learning Resources
 https://docs.ansible.com/ansible/latest/installation_guide/intro_installation.html#selecting-an-ansible-version-to-install 
