@@ -22,7 +22,7 @@ https://docs.microsoft.com/en-us/azure/virtual-machines/linux/create-ssh-keys-de
 
 ## Install an Editor for Editing YAML files
 
-You may also want to use Visual Studio Code which is available on Windows, Mac and Linux for editing the YAML files needed for Ansible. You can add the Ansible and the YAML extensions for this. 
+You may want to use an editor like Visual Studio Code which is available on Windows, Mac and Linux for editing the YAML files needed for Ansible. You can add the Ansible and the YAML extensions for this. 
 
 ## Learning Resources
 https://docs.ansible.com/ansible/latest/installation_guide/intro_installation.html#selecting-an-ansible-version-to-install 
