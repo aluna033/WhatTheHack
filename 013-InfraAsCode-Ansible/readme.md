@@ -31,19 +31,19 @@ This hack will help you learn:
    - Learn how to find Ansible syntax to deploy an Azure resource
 1. [Open Some Ports](./Student/Challenge-03.md)
    - Learn about variables, dependencies, idempotency
-1. [Create a Linux Virtual Machine](./Student/Challenge-05.md)
+1. [Create a Linux Virtual Machine](./Student/Challenge-04.md)
    - Learn what an Azure Virtual Machine is composed of
-1. [Install NGINX on a Linux Virtual Machine](./Student/Challenge-06.md)
+1. [Install NGINX on a Linux Virtual Machine](./Student/Challenge-05.md)
    - Learn about custom script extensions
-1. [Add a Data Disk and mount to OS](./Student/Challenge-07.md)
+1. [Add a Data Disk and mount to OS](./Student/Challenge-06.md)
    - Learn persistent storage, reinforce script injection, teach mounting a disk 
 1. [Implement High Availability](./Student/Challenge-08.md)
    - Availability set 2 VMs load balancer and learn loops
-1. [Nested Playbooks](./Student/Challenge-10.md)
+1. [Nested Playbooks](./Student/Challenge-08.md)
    - Learn how to create smaller playbooks for granular resource management
-1. [Secret Values with Azure Key Vault](./Student/Challenge-04.md) 
+1. [Secret Values with Azure Key Vault](./Student/Challenge-09.md) 
    - Learn how to not lose your job
-1. [Deploy Azure Database for PostgreSQL](./Student/Challenge-09.md) 
+1. [Deploy Azure Database for PostgreSQL](./Student/Challenge-10.md) 
    - Learn how to deploy a PaaS service
 
 

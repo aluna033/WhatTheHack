@@ -1,45 +1,53 @@
-# Challenge 5 - Deploy a Virtual Machine
+# Challenge 5 - Configure a Linux Server with NGINX
 
 [< Previous Challenge](./Challenge-04.md) - [Home](../readme.md) - [Next Challenge>](./Challenge-06.md)
 
-## Introduction 
-
-In this challenge, you will put all the pieces together and extend your Ansible playbook to deploy a Virtual Machine in Azure.
+## Introduction
 
 The goals for this challenge include understanding:
-   + Globally unique naming context and complex dependencies
-   + Clean code with neat parameter and variable values
-   + Figuring out what Azure resources it takes to build a VM
+- Custom script extensions
+- Globally unique naming context and complex dependencies
+- Staging artifacts in a location accessible to the Azure Resource Manager
 
 ## Description
 
-+	Extend your Ansible playbook to deploy a virtual machine
-    +   VM requirements -
-        +   Linux OS 
-        +   Use a secure secret value for the admin password from Azure Key Vault
-    + Use a resource prefix and playbook variables to have consistent naming of resources
+We have provided a script (`install_apache.sh`) that configures a web server on a Linux VM. When run on the VM, the script deploys a static web page that should be available at `http://<PublicIPofTheVM>/wth.html`
+
+You can find the script in the Resources folder for **Challenge-06**.
+
+Your challenge is to:
+
+- Extend the Ansible playbook to configure a webserver on the Linux VM you deployed
+    - Host the script file in a secure artifact (staging) location that is only accessible to the Azure Resource Manager.
+    - Pull the website configuration script from the artifact location.
 
 ```
-ORIGINAL CHALLENGE TEXT:
+ORIGINAL CHALLENGE TEXT
 
-Create a Linux VM using Ansible. You will first need to create a Network Interface Card. Use the following settings for the NIC:
+Install the NGINX web server on an existing Linux Virtual Machine. To do this you will need to create an inventory.cfg and a YAML file. The inventory.cfg has information about the VM you want to manage and the location of the Python interpreter. To find the location of Python, you will need to SSH to the VM and look in /usr/bin. Use the latest version
 
-Resource group: ansible-rg Name: ansible-VM-nic Public IP address: ansible-pip VNet: WTHVNETAN Subnet: default Security Group: ansible-nsg-ssh
+It should look something like this:
 
-The VM will use all of the Azure resources you have previously created. Use the following settings:
+[web]
+{Your public IP address of the Linux VM} ansible_user=azureuser
 
-VM Name: anlinuxvm01 Resource Group: ansible-rg VM Size: Standard_DS1_v2 Admin username: azureuser SSH password enabled: false SSH public keys: [use the public key you created in the prequisites section] Network interfaces: ansible-VM-nic Managed Disk Type: Premium_LRS Image: CentOS 7.5 (or Ubuntu 18.04 if you prefer)
+[web:vars]
+ansible_python_interpreter={location of python install}
 
-Ensure that you can SSH to the VM using its public IP address with ssh azureuser@[public ip address]
+Once you have the inventory.cfg, you will create the Ansible Playbook YAML file that will install NGINX. First, you will update all apt (Ubuntu) or yum (Redhat/CentOS) packages to the latest version. For RedHat/CentOS you will need install the EPEL repository (epel-release) before we install NGINX. Next, you will install NGINX using apt or yum in the file and set the service to running.
 
-Hint: You can use the Azure CLI command az vm list-ip-addresses to find the IP address for the newly created VM.
+To use the inventory.cfg file you will need to run the following Ansible playbook command which will use the inventory.cfg and YAML file you created earlier. The -b switch tells Ansible to run as root using sudo.
+
+ansible-playbook -i inventory.cfg {yaml file} -b
+
 ```
+
 ## Success Criteria
 
-1. Verify that your virtual machine has been deployed via the Azure Portal or Azure CLI.
-1. Connect to your virtual machine and verify you can login via SSH
+1. Verify that NGINX is running by running curl from the SSH terminal with `curl http://127.0.0.1`
 
 ## Tips
 
-- **TIP:** For a Linux VM, you can use an admin password or an SSH key to control access to the VM. It is common (and a recommended practice) to use an SSH key with Linux instead of an admin password. If you are not familiar with Linux, we recommend using an admin password for this hack to keep things simple and focus on learning Ansible playbooks.
-- **TIP:** You will need to supply your VM with a Public IP address or use the Azure Bastion service to connect to it.
+- Use an Azure Blob Storage account as the artifact location
+- Secure access to the artifact location with a SAS token
+- Pass these values to the Ansible playbook as parameters

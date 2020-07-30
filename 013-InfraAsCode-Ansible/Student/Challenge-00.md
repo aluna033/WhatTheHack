@@ -2,73 +2,30 @@
 
 [< Home](../readme.md)&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;[Next Challenge>](./Challenge-01.md)
 
-## Pre-requisites (Optional)
+## Pre-requisites
 
-*Include any technical pre-requisites needed for this challenge.  Typically, it is completion of one or more of the previous challenges if there is a dependency.*
+## Install and Configure Ansible
+You have several options to choose from when in comes to installing Ansible.
 
-**- Lorem ipsum dolor sit amet, consectetur adipiscing elit.**
+1) Install Ansible on your own machine. On Windows you can use the Windows Subsystem for Linux and a Linux distribution like Ubuntu from the Microsoft Store. You can also install Ansible on Mac OS or Linux.
+2) Use Azure Cloud Shell which already has Ansible installed
 
-**- Fusce commodo nulla elit, vitae scelerisque lorem maximus eu.** 
+Using Azure Cloud Shell is the quickest method but you may wish to have more control of your editor and so one of the other options may be more desirable for you.
 
-**- Nulla vitae ante turpis. Etiam tincidunt venenatis mauris, ac volutpat augue rutrum sed. Vivamus dignissim est sed dolor luctus aliquet. Vestibulum cursus turpis nec finibus commodo.**
+You will need to create Azure credentials using your Azure subscription ID and service principal values. Once you have done that you will create an Ansible credentials file with your subscription Id, tenant Id, secret and client Id. 
 
-**- Vivamus venenatis accumsan neque non lacinia. Sed maximus sodales varius. Proin eu nulla nunc. Proin scelerisque ipsum in massa tincidunt venenatis. Nulla eget interdum nunc, in vehicula risus.**
+You may also want to use Visual Studio Code which is available on Windows, Mac and Linux for editing the YAML files needed for Ansible. You can add the Ansible and the YAML extensions for this. 
 
+## Create SSH Key
 
-## Introduction (Optional)
+Generate an SSH key pair for being able to access your Linux VM's. You can find a detailed instructions on how to create an SSH key pair at the URL below. 
 
-*Provide an overview of the technologies or tasks that will be needed to complete the next challenge.  This includes the technical context for the challenge, as well as any new "lessons" the attendees should learn before completing the challenge.*
-
-*Optionally, the coach or event host may present a mini-lesson (with a PPT or video) to set up the context & introduction to the next topic.*
-
-**Lorem ipsum dolor sit amet, consectetur adipiscing elit. Fusce commodo nulla elit, vitae scelerisque lorem maximus eu. Nulla vitae ante turpis. Etiam tincidunt venenatis mauris, ac volutpat augue rutrum sed. Vivamus dignissim est sed dolor luctus aliquet. Vestibulum cursus turpis nec finibus commodo. Vivamus venenatis accumsan neque non lacinia.**
-
-
-## Description
-
-*The challenge description and details go here.  This should NOT be step-by-step but rather a simple stating of the technical goals of the challenge.  If this is more than 2-3 paragraphs, it's likely you are not doing it right.*
-
-*Optionally, you may provide learning resources and/or tips and code snippets in the sections below. These are meant  as learning aids for the attendees to help them complete the challenge and maintain momentum as they may fall behind the rest of their squad cohorts.*
-
-**Lorem ipsum dolor sit amet, consectetur adipiscing elit. Fusce commodo nulla elit, vitae scelerisque lorem maximus eu. Nulla vitae ante turpis. Etiam tincidunt venenatis mauris, ac volutpat augue rutrum sed. Vivamus dignissim est sed dolor luctus aliquet. Vestibulum cursus turpis nec finibus commodo. Vivamus venenatis accumsan neque non lacinia. Sed maximus sodales varius. Proin eu nulla nunc. Proin scelerisque ipsum in massa tincidunt venenatis. Nulla eget interdum nunc, in vehicula risus. Etiam rutrum purus non eleifend lacinia. Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed quis vestibulum risus. Maecenas eu eros sit amet ligula consectetur pellentesque vel quis nisi.**
-
-
-## Success Criteria
-
-*Success criteria goes here. This is a list of things an coach can verfiy to prove the attendee has successfully completed the challenge.*
-
-**- Lorem ipsum dolor sit amet, consectetur adipiscing elit. Fusce commodo nulla elit, vitae scelerisque lorem maximus eu. Nulla vitae ante turpis. Etiam tincidunt venenatis mauris, ac volutpat augue rutrum sed. Vivamus dignissim est sed dolor luctus aliquet. Vestibulum cursus turpis nec finibus commodo.**
-
-**- Vivamus venenatis accumsan neque non lacinia. Sed maximus sodales varius. Proin eu nulla nunc. Proin scelerisque ipsum in massa tincidunt venenatis. Nulla eget interdum nunc, in vehicula risus. Etiam rutrum purus non eleifend lacinia.**
-
-**- Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed quis vestibulum risus. Maecenas eu eros sit amet ligula consectetur pellentesque vel quis nisi.**
-
+https://docs.microsoft.com/en-us/azure/virtual-machines/linux/create-ssh-keys-detailed
 
 ## Learning Resources
+https://docs.ansible.com/ansible/latest/installation_guide/intro_installation.html#selecting-an-ansible-version-to-install 
+https://docs.microsoft.com/en-us/azure/virtual-machines/linux/ansible-install-configure#install-ansible-on-an-azure-linux-virtual-machine
+https://docs.ansible.com/ansible/latest/scenario_guides/guide_azure.html#providing-credentials-to-azure-modules
+https://docs.microsoft.com/en-us/azure/active-directory/develop/howto-create-service-principal-portal
 
-*List of relevant links and online articles that should give the attendees the knowledge needed to complete the challenge.*
-
-**- Lorem ipsum dolor sit amet, consectetur adipiscing elit.**
-
-**- Fusce commodo nulla elit, vitae scelerisque lorem maximus eu.** 
-
-**- Nulla vitae ante turpis. Etiam tincidunt venenatis mauris, ac volutpat augue rutrum sed. Vivamus dignissim est sed dolor luctus aliquet. Vestibulum cursus turpis nec finibus commodo.**
-
-
-## Tips (Optional)
-
-*Add tips and hints here to give students food for thought.*
-
-**- Lorem ipsum dolor sit amet, consectetur adipiscing elit.**
-
-**- Fusce commodo nulla elit, vitae scelerisque lorem maximus eu.** 
-
-
-## Advanced Challenges (Optional)
-
-*Too comfortable?  Eager to do more?  Try these additional challenges!*
-
-**- Lorem ipsum dolor sit amet, consectetur adipiscing elit. Fusce commodo nulla elit, vitae scelerisque lorem maximus eu. Nulla vitae ante turpis. Etiam tincidunt venenatis mauris, ac volutpat augue rutrum sed. Vivamus dignissim est sed dolor luctus aliquet. Vestibulum cursus turpis nec finibus commodo. Vivamus venenatis accumsan neque non lacinia.**
-
-**- Sed maximus sodales varius. Proin eu nulla nunc. Proin scelerisque ipsum in massa tincidunt venenatis. Nulla eget interdum nunc, in vehicula risus. Etiam rutrum purus non eleifend lacinia. Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed quis vestibulum risus. Maecenas eu eros sit amet ligula consectetur pellentesque vel quis nisi.**
 

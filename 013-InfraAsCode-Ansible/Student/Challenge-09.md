@@ -1,23 +1,32 @@
-# Challenge 9 - Deploy Azure Database for PostgreSQL 
+# Challenge 9 - Secret Values with Azure Key Vault
 
 [< Previous Challenge](./Challenge-08.md) - [Home](../readme.md) - [Next Challenge>](./Challenge-10.md)
 
 ## Introduction
 
-The goal for this challenge includes understanding:
-- How to deploy an Azure managed database (Azure Database for PostgreSQL) with Ansible.
+The goals for this challenge are to understand:
+- Handling secret values
+- Not getting fired!
 
-In the previous challenges, you used Ansible to deploy a Virtual Machine and all of the core infrastructure resources it depends on. In this challenge, you will use Ansible to deploy a managed (aka "platform-as-a-service" or PaaS) database service in Azure.
+So far, the only parameters you have passed into your Ansible playbook have been related to the Virtual Network. In the next challenge you will deploy a VM which will require you to pass in a password for the VM's admin account.  It is an **ANTI-pattern** to put a secret value such as a password in plain text in a parameter file! NEVER do this!
+
+#### **Seriously, this is something that could cost you your job!**
+
+It is a BEST practice to store secret values (such as passwords) in the Azure Key Vault service. We have provided you with a script that can create a Key Vault for you, and prompt you to enter the secret value (password) you want to store in the vault.
 
 ## Description
 
-- Extend the Anisble playbook to deploy an instance of Azure Database for PostgreSQL.
-- The database should be configured with the following specifications:
-    - SKU
-    - Storage
-    - ???
+Your challenge, should you accept it, is to:
++ Create an Azure Key Vault and store a secret value in it by running one of the provided KeyVault scripts of your choice. You can find the scripts in the Resources folder for **Challenge-04**:
+    - create-key-vault-CLI.sh - Azure CLI
+    - create-key-vault-PS.ps1 - PowerShell
++ Retrieve the secret value from Azure Key Vault and pass it into your Ansible playbook as a parameter without having the value exposed as plain text at any point in time!
+
 
 ## Success Criteria
 
-1. Verify the database is deployed as configured in the Azure portal
-1. Verify you can connect to the database using a client tool such as `INSERT TOOL LINK HERE`
+1. Verify the value of the parameter in the portal after deployment
+
+## Advanced Challenge (Optional)
+
+The goal of this challenge was focused on how to _retrieve_ secret values from Key Vault for use in an Ansible playbook. You can create an Azure Key Vault using an Ansible playbook too.  Feel free to try this as a bonus challenge.

@@ -1,32 +1,45 @@
-# Challenge 4 - Secret Values with Azure Key Vault
+# Challenge 4 - Deploy a Virtual Machine
 
 [< Previous Challenge](./Challenge-03.md) - [Home](../readme.md) - [Next Challenge>](./Challenge-05.md)
 
-## Introduction
+## Introduction 
 
-The goals for this challenge are to understand:
-- Handling secret values
-- Not getting fired!
+In this challenge, you will put all the pieces together and extend your Ansible playbook to deploy a Virtual Machine in Azure.
 
-So far, the only parameters you have passed into your Ansible playbook have been related to the Virtual Network. In the next challenge you will deploy a VM which will require you to pass in a password for the VM's admin account.  It is an **ANTI-pattern** to put a secret value such as a password in plain text in a parameter file! NEVER do this!
-
-#### **Seriously, this is something that could cost you your job!**
-
-It is a BEST practice to store secret values (such as passwords) in the Azure Key Vault service. We have provided you with a script that can create a Key Vault for you, and prompt you to enter the secret value (password) you want to store in the vault.
+The goals for this challenge include understanding:
+   + Globally unique naming context and complex dependencies
+   + Clean code with neat parameter and variable values
+   + Figuring out what Azure resources it takes to build a VM
 
 ## Description
 
-Your challenge, should you accept it, is to:
-+ Create an Azure Key Vault and store a secret value in it by running one of the provided KeyVault scripts of your choice. You can find the scripts in the Resources folder for **Challenge-04**:
-    - create-key-vault-CLI.sh - Azure CLI
-    - create-key-vault-PS.ps1 - PowerShell
-+ Retrieve the secret value from Azure Key Vault and pass it into your Ansible playbook as a parameter without having the value exposed as plain text at any point in time!
++	Extend your Ansible playbook to deploy a virtual machine
+    +   VM requirements -
+        +   Linux OS 
+        +   Use a secure secret value for the admin password from Azure Key Vault
+    + Use a resource prefix and playbook variables to have consistent naming of resources
 
+```
+ORIGINAL CHALLENGE TEXT:
 
+Create a Linux VM using Ansible. You will first need to create a Network Interface Card. Use the following settings for the NIC:
+
+Resource group: ansible-rg Name: ansible-VM-nic Public IP address: ansible-pip VNet: WTHVNETAN Subnet: default Security Group: ansible-nsg-ssh
+
+The VM will use all of the Azure resources you have previously created. Use the following settings:
+
+VM Name: anlinuxvm01 Resource Group: ansible-rg VM Size: Standard_DS1_v2 Admin username: azureuser SSH password enabled: false SSH public keys: [use the public key you created in the prequisites section] Network interfaces: ansible-VM-nic Managed Disk Type: Premium_LRS Image: CentOS 7.5 (or Ubuntu 18.04 if you prefer)
+
+Ensure that you can SSH to the VM using its public IP address with ssh azureuser@[public ip address]
+
+Hint: You can use the Azure CLI command az vm list-ip-addresses to find the IP address for the newly created VM.
+```
 ## Success Criteria
 
-1. Verify the value of the parameter in the portal after deployment
+1. Verify that your virtual machine has been deployed via the Azure Portal or Azure CLI.
+1. Connect to your virtual machine and verify you can login via SSH
 
-## Advanced Challenge (Optional)
+## Tips
 
-The goal of this challenge was focused on how to _retrieve_ secret values from Key Vault for use in an Ansible playbook. You can create an Azure Key Vault using an Ansible playbook too.  Feel free to try this as a bonus challenge.
+- **TIP:** For a Linux VM, you can use an admin password or an SSH key to control access to the VM. It is common (and a recommended practice) to use an SSH key with Linux instead of an admin password. If you are not familiar with Linux, we recommend using an admin password for this hack to keep things simple and focus on learning Ansible playbooks.
+- **TIP:** You will need to supply your VM with a Public IP address or use the Azure Bastion service to connect to it.
