@@ -24,11 +24,24 @@ ORIGINAL CHALLENGE TEXT:
 
 Create a Linux VM using Ansible. You will first need to create a Network Interface Card. Use the following settings for the NIC:
 
-Resource group: ansible-rg Name: ansible-VM-nic Public IP address: ansible-pip VNet: WTHVNETAN Subnet: default Security Group: ansible-nsg-ssh
+Resource group: ansible-rg 
+Name: ansible-VM-nic 
+Public IP address: ansible-pip 
+VNet: WTHVNETAN 
+Subnet: default 
+Security Group: ansible-nsg-ssh
 
 The VM will use all of the Azure resources you have previously created. Use the following settings:
 
-VM Name: anlinuxvm01 Resource Group: ansible-rg VM Size: Standard_DS1_v2 Admin username: azureuser SSH password enabled: false SSH public keys: [use the public key you created in the prequisites section] Network interfaces: ansible-VM-nic Managed Disk Type: Premium_LRS Image: CentOS 7.5 (or Ubuntu 18.04 if you prefer)
+VM Name: anlinuxvm01 
+Resource Group: ansible-rg 
+VM Size: Standard_DS1_v2 
+Admin username: azureuser 
+SSH password enabled: false 
+SSH public keys: [use the public key you created in the prequisites section] 
+Network interfaces: ansible-VM-nic 
+Managed Disk Type: Premium_LRS Image: 
+CentOS 7.5 (or Ubuntu 18.04 if you prefer)
 
 Ensure that you can SSH to the VM using its public IP address with ssh azureuser@[public ip address]
 

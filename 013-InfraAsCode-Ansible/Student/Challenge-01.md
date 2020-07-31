@@ -2,17 +2,9 @@
 
  [Home](../readme.md) - [Next Challenge>](./Challenge-02.md)
 
-## Pre-requisites
+## Prerequisites
 
-Make sure your machine is set up with the proper tooling: [What The Hack - Common Prerequisites](../../000-HowToHack/WTH-Common-Prerequisites.md)
-
-There are two ways to use Ansible with Azure:
-- Ansible client on your workstation
-- Ansible client in Azure Cloud Shell
-
-Ansible is pre-installed in Azure Cloud Shell where it is pre-configured to be authenticated with your Azure subscription.  
-
-If you run Ansible on your workstation, you will need to configure it to authenticate with your Azure subscription. This is part of the challenge.
+Make sure your machine is set up with the proper tooling: [What The Hack - Common Prerequisites](./Challenge-00.md)
 
 ## Introduction
 
@@ -25,11 +17,6 @@ Your first challenge is to create a simple "Hello World" Ansible playbook. The g
 ## Description
 
 Develop an Ansible playbook that creates an Azure resource group named "ansible-rg"
-   - Deploy it using the Azure Cloud Shell
-   - Deploy it using Ansible on your workstation
-
-
-`ORIGINAL CHALLENGE TEXT: Create a YAML file named rg.yml. Using Ansible and the YAML file you created, create a resource group named ansible-rg in the East US 2 Azure region. Deploy the resource group using ansible-playbook`
 
 ## Success Criteria
 

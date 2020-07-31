@@ -18,8 +18,6 @@ Extend the Ansible playbook to provision an Azure Virtual Network. The virtual n
     - Subnet Address Prefix
 -   Use a parameter file to pass in parameter values 
 
-`ORIGINAL CHALLENGE TEXT: Create an Azure Virtual Network using Ansible. Create a YAML file named WTHVNetAN.yml. The virtual network should have an address space of 10.2.0.0/16 and be named "WTHVNetAN". Add one subnet to it with an address range of 10.2.0.0/24 and name it "default"`
-
 ## Success Criteria
 
 1. Verify that Virtual Network has been deployed in the portal

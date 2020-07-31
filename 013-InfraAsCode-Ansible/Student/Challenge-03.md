@@ -6,7 +6,6 @@
 
 The goals for this challenge include understanding:
  - variables
- - dependencies (**Hint:** Resource IDs)
  - idempotency
 
 ## Description
@@ -20,6 +19,4 @@ Extend the Ansible playbook to add a Network Security Group that you will use to
 
 ## Learning Resources
 
-`Are resource IDs relevant in the context of Ansible?  If not, this link might not be relevant.`
-
-- [Understanding ARM Resource IDs](https://docs.microsoft.com/en-us/azure/azure-resource-manager/templates/template-functions-resource#resourceid)
+https://docs.microsoft.com/en-us/azure/virtual-network/manage-network-security-group
