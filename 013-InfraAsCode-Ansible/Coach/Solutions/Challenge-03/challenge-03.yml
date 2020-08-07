@@ -1,0 +1,69 @@
+---
+- hosts: localhost
+  connection: local
+  collections:
+    - azure.azcollections
+  
+  #Set Variables
+  vars:
+    wth_rg_name: ansible-wth-rg
+    wth_ssh_nsg: ansible_wth_nsg
+    wth_vm_nsg_list: 
+      - name: allow-ssh
+        access: Allow
+        protocol: Tcp
+        direction: Inbound
+        priority: 1000
+        port: 22 
+        source_address_prefix: Internet
+      - name: allow-http
+        access: Allow
+        protocol: Tcp
+        direction: Inbound
+        priority: 1020
+        port: 80 
+        source_address_prefix: Internet
+
+  tasks:
+
+  # Create a resource group in a local region
+  
+  - name: Create a resource named ansible-wth-rg 
+    azure_rm_resourcegroup:
+      name: "{{ wth_rg_name }}"
+      location: eastus2
+
+  # Create Virtual Network
+  
+  - name: "Create Virtual Network"
+    azure_rm_virtualnetwork:
+      name: wthVnet
+      resource_group: "{{ wth_rg_name }}"
+      address_prefixes_cidr:
+        - "10.2.0.0/16"
+  
+  # Create Subnet
+  
+  - name: "Create Subnet"
+    azure_rm_subnet:
+      name: default
+      virtual_network_name: wthVnet
+      resource_group: "{{ wth_rg_name }}"
+      address_prefix_cidr: "10.2.1.0/24"
+
+  #Create NSG for ssh and http
+  
+  - name: Create Network Security Group that allows ssh
+    azure_rm_securitygroup:
+       resource_group: "{{ wth_rg_name }}"
+       name: "{{ wth_ssh_nsg }}"
+       rules:
+         - name: "{{ item.name }}"
+           protocol: "{{ item.protocol }}"
+           source_address_prefix: "{{ item.source_address_prefix }}"
+           destination_port_range: "{{ item.port }}"
+           access: "{{ item.access }}"
+           priority: "{{ item.priority }}"
+           direction: "{{ item.direction }}"
+    loop: "{{ wth_vm_nsg_list }}"
+    

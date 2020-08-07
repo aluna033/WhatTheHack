@@ -17,3 +17,7 @@
       service:
         name: nginx
         state: started
+    - name: Add html page for verification
+      shell: echo '\<center>\<h1>Welcome to What The Hack{{":"}} IaC Ansible Challenges</h1><br/></center>' > /usr/share/nginx/html/wth.html
+      
+        

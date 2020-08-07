@@ -5,7 +5,7 @@
     - azure.azcollections
   
   tasks:
- # Create Virtunal Network
+ # Create Virtual Network
     - name: "Create Virtual Network"
       azure_rm_virtualnetwork:
         name: wthVnet
