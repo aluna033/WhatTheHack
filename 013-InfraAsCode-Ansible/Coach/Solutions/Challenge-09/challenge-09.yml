@@ -1,0 +1,80 @@
+---
+- hosts: localhost
+  collections:
+    - azure.azcollection
+
+  vars:
+    wth_rg_name: ansible-wth-rg
+    wth_location: eastus2
+    wth_db_admin: azuredbuser
+   
+    # PosgreSQL ServerName must be Unique 
+    wth_postgresqlserver_name: wthpostgresql001
+    wth_postgresqldb_name: wthpostgresqldb001
+    wth_admin_username: "{{ wth_db_admin }}"
+    #wth_admin_password: P@ssw0rd!
+
+    # Keyvault info
+    wth_kv_uri: "https://kv98.vault.azure.net/"
+    wth_kv_secret_name: wthsecret
+    
+    # The following variables are specific to the sizing of server 
+    # additional information in the following link 
+    # https://docs.microsoft.com/en-us/azure/postgresql/quickstart-create-server-database-portal
+    
+    wth_postgresqlserver_sku_name: B_Gen5_1
+    wth_postgresqlserver_sku_tier: Basic
+    wth_postgresqlserver_sku_capacity: 1
+    wth_postgresqlserver_enforce_ssl: True
+    wth_postgresqlserver_storage_mb: 51200
+
+  tasks:
+  # Obtain latest version of the a secret
+    - name: Get latest version of a secret
+      azure_rm_keyvaultsecret_info:
+        vault_uri: "{{ wth_kv_uri }}"
+        name: "{{ wth_kv_secret_name }}"
+      register: output
+    - debug:
+        var: output['secrets'][0]['secret']
+
+  # Create resource group 
+
+    - name: Create a resource group
+      azure_rm_resourcegroup:
+        name: "{{ wth_rg_name }}"
+        location: "{{ wth_location }}"
+
+  # Create Posgresql Server
+
+    - name: Create PostgreSQL Server
+      azure_rm_postgresqlserver:
+        resource_group: "{{ wth_rg_name }}"
+        name: "{{ wth_postgresqlserver_name }}"
+        sku:
+          name: "{{ wth_postgresqlserver_sku_name }}"
+          tier: "{{ wth_postgresqlserver_sku_tier }}"
+          capacity: "{{ wth_postgresqlserver_sku_capacity }}"
+        location: "{{ wth_location }}"
+        enforce_ssl: "{{ wth_postgresqlserver_enforce_ssl }}"
+        admin_username: "{{ wth_admin_username }}"
+        admin_password: " {{ output['secrets'][0]['secret'] }}"
+        storage_mb: "{{ wth_postgresqlserver_storage_mb }}"
+
+  # Create Postgresql db instance
+
+    - name: Create instance of PostgreSQL Database
+      azure_rm_postgresqldatabase:
+        resource_group: "{{ wth_rg_name }}"
+        server_name: "{{ wth_postgresqlserver_name }}"
+        name: "{{ wth_postgresqldb_name }}"
+
+  # Create firewall rule to allow Azure Services to connect to PostgreSQL Database
+  
+    - name: Create (or update) PostgreSQL firewall rule
+      azure_rm_postgresqlfirewallrule:
+        resource_group: "{{ wth_rg_name }}"
+        server_name: "{{ wth_postgresqlserver_name }}"
+        name: AllowAzure
+        start_ip_address: 0.0.0.0
+        end_ip_address: 0.0.0.0

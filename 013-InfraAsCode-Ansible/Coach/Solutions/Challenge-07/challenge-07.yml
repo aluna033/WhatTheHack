@@ -1,0 +1,178 @@
+---
+- hosts: localhost
+  connection: local
+  collections:
+    - azure.azcollections
+  
+  #Set Variables
+  vars:
+    wth_location: eastus2
+    wth_rg_name: ansible-wth-rg
+    wth_vnet_name: wthVnet
+    wth_subnet_name: default
+
+
+    wth_ssh_nsg: ansible_wth_nsg
+    wth_vm_nsg_list: 
+      - name: allow-ssh
+        access: Allow
+        protocol: Tcp
+        direction: Inbound
+        priority: 1000
+        port: 22 
+        source_address_prefix: Internet
+      - name: allow-http
+        access: Allow
+        protocol: Tcp
+        direction: Inbound
+        priority: 1020
+        port: 80 
+        source_address_prefix: Internet
+    
+  # Variables for VM Creation (VMName, RSA Key Path, Machine SKU, Storage)
+
+    admin_pub_path: "~/.ssh/id_rsa.pub"
+    wth_vm_name: anlinuxvm
+    wth_admin_user: azureuser
+    wth_managed_disk_type: Premium_LRS
+    wth_vm_size: Standard_DS1_v2
+
+  # Variables for Availability Set and LB Additions
+
+    wth_availabilityset_name: wthAnsibleASet
+    wth_vm_root_name: "{{wth_vm_name}}-vm"
+    wth_nic_root_name: "{{wth_vm_name}}-nic"
+    wth_instance_num: 2
+    wth_lb_name: wth-ansible-lb
+
+  tasks:
+  
+  # Create a resource group in a local region
+
+  - name: Create a resource named ansible-wth-rg 
+    azure_rm_resourcegroup:
+      name: "{{ wth_rg_name }}"
+      location: "{{ wth_location }}"
+
+  # Create Virtual Network
+
+  - name: "Create Virtual Network"
+    azure_rm_virtualnetwork:
+      name: wthVnet
+      resource_group: "{{ wth_rg_name }}"
+      address_prefixes_cidr:
+        - "10.2.0.0/16"
+  
+  # Create Subnet
+
+  - name: "Create Subnet"
+    azure_rm_subnet:
+      name: "{{ wth_subnet_name }}"
+      virtual_network_name: "{{ wth_vnet_name }}"
+      resource_group: "{{ wth_rg_name }}"
+      address_prefix_cidr: "10.2.1.0/24"
+
+  # Create NSG for ssh and http
+
+  - name: Create Network Security Group that allows ssh
+    azure_rm_securitygroup:
+       resource_group: "{{ wth_rg_name }}"
+       name: "{{ wth_ssh_nsg }}"
+       rules:
+         - name: "{{ item.name }}"
+           protocol: "{{ item.protocol }}"
+           source_address_prefix: "{{ item.source_address_prefix }}"
+           destination_port_range: "{{ item.port }}"
+           access: "{{ item.access }}"
+           priority: "{{ item.priority }}"
+           direction: "{{ item.direction }}"
+    loop: "{{ wth_vm_nsg_list }}"
+    
+  # Create availability set 
+ 
+  - name: "Create Availability Set"
+    azure_rm_availabilityset:
+      name: "{{ wth_availabilityset_name }}"
+      location: "{{ wth_location }}"
+      resource_group: "{{ wth_rg_name }}"
+      sku: Aligned
+ 
+ 
+  # Create Public IP Address for LB
+
+  - name: Create public IP address
+    azure_rm_publicipaddress:
+      resource_group: "{{ wth_rg_name }}"
+      allocation_method: dynamic
+      name: "{{wth_lb_name}}-pip"
+
+
+  # Create Load Balancer
+
+  - name: Create load balancer
+    azure_rm_loadbalancer:
+      resource_group: "{{ wth_rg_name }}"
+      name: "{{wth_lb_name}}"
+      frontend_ip_configurations:
+          - name: frontendipconf0
+            public_ip_address: "{{wth_lb_name}}-pip"
+      backend_address_pools:
+          - name: backendaddrpool0
+      probes:
+          - name: probWeb
+            port: 80
+            protocol: Http
+            request_path: "/"
+      load_balancing_rules:
+          - name: web
+            frontend_ip_configuration: frontendipconf0
+            backend_address_pool: backendaddrpool0
+            frontend_port: 80
+            backend_port: 80
+            probe: probWeb
+        
+
+   # Create Network Interface Card for VM
+
+  - name: "Create a {{wth_nic_root_name}}X network interface for each VM"
+    azure_rm_networkinterface:
+        name: "{{wth_nic_root_name}}-{{item}}"
+        resource_group: "{{ wth_rg_name }}"
+        virtual_network:  "{{ wth_vnet_name }}"
+        create_with_security_group: false
+        subnet_name: "{{ wth_subnet_name }}"
+        ip_configurations:
+          - name: "ipconfig"
+            primary: True
+        load_balancer_backend_address_pools:
+          - name: backendaddrpool0
+            load_balancer: "{{wth_lb_name}}"
+    with_sequence: count="{{ wth_instance_num }}"
+
+   # Create Virtual Machinees
+ 
+  - name: "Create {{wth_vm_root_name}}X VM with existing NIC"
+    azure_rm_virtualmachine:
+        resource_group: "{{ wth_rg_name }}"
+        name: "{{wth_vm_root_name}}-{{item}}"
+        vm_size: "{{wth_vm_size}}"
+        managed_disk_type: "{{wth_managed_disk_type}}"
+        admin_username: "{{wth_admin_username}}"
+        availability_set: "{{ wth_availabilityset_name }}"
+        ssh_password_enabled: false
+        ssh_public_keys:
+          - path: "/home/{{admin_username}}/.ssh/authorized_keys"
+            key_data: "{{lookup('file', '{{admin_pub_path}}') }}"
+        network_interfaces: "{{wth_nic_root_name}}-{{item}}"
+        image:
+          offer: CentOS
+          publisher: OpenLogic
+          sku: '8.0'
+          version: latest
+        data_disks:
+        - lun: 0
+          disk_size_gb: 128
+          managed_disk_type: Premium_LRS
+  
+
+  

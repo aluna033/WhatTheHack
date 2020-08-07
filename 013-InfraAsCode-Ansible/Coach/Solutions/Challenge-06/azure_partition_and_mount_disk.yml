@@ -1,0 +1,64 @@
+---
+- hosts: test
+  become: true
+  gather_facts: true
+  vars_prompt:
+    - name: "primary_partition"
+      prompt: "Choose a primary_partition"
+      private: no
+      default: "/dev/sdc"
+    - name: "actual_partition"
+      prompt: "Choose the partition to mount the new directory"
+      private: no
+      default: "/dev/sdc1"
+    - name: "mount_folder"
+      prompt: "Choose a directory for the new mount"
+      private: no
+      default: "/cfrm"
+    - name: "file_system_type"
+      prompt: "Choose file system type"
+      private: no
+      default: "ext4"
+  tasks:
+   - name: "Create a new primary partition"
+     parted:
+       device: "{{ primary_partition }}"
+       number: 1
+       state: present
+     tags: ['disk']
+     
+   - name: "Probe kernel about partition table changes"
+     command: partprobe
+     tags: ['disk']
+     
+   - name: "Probe kernel about partition table changes"
+     command: "mkfs -t ext4 {{ actual_partition }}"
+     tags: ['disk']
+     
+   - name: "Create {{ mount_folder }} directory"
+     file:
+       path: "{{ mount_folder }}"
+       state: directory
+       owner: root
+       group: root
+       mode: 0755
+     tags: ['disk']
+     
+   - name: "Get UUID for new {{ mount_folder }} partition"
+     command: "blkid -s UUID -o value {{ actual_partition }}"
+     register: disk_blkid
+     tags: ['disk']
+
+#    - name: "Show only device name"
+#      debug: var=disk_blkid
+#      tags: ['disk']
+     
+   - name: "Mount additional disk to {{ mount_folder }}"
+     mount:
+       path: "{{ mount_folder }}"
+       fstype: "{{ file_system_type }}"
+       opts: "{{ item.0.mount_options|d(omit) }}"
+       passno: "0"
+       src: "UUID={{ disk_blkid.stdout }}"
+       state: '{{ item.0.mount_state|d("mounted") }}'
+     tags: ['disk']
